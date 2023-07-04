@@ -1,15 +1,23 @@
-﻿using System;
+﻿using Ejercicio11.Helper;
+using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Ejercicio11.Models
 {
     public enum TipoVehiculo
     {
+        [Description("Deportivo")]
         Deportivo = 0,
+        [Description("Sedan")]
         Sedan,
+        [Description("PikUp")]
         PikUp,
+        [Description("Suv")]
         Suv,
+        [Description("Coope")]
         Coope
     }
     public class Vehiculo
@@ -33,5 +41,10 @@ namespace Ejercicio11.Models
         public int RuedaId { get; set; }
         [ForeignKey("RuedaId")]
         public Rueda Rueda { get; set; }
+        public string TipoVehiculoString => Enum.GetValues(typeof(TipoVehiculo))
+                                                .OfType<TipoVehiculo>()
+                                                .Where(x => x == TipoVehiculo)
+                                                .Select(x => x.GetDescription())
+                                                .FirstOrDefault();
     }
 }

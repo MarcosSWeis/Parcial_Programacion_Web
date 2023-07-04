@@ -21,6 +21,14 @@ namespace Ejercicio11
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt =>
+            {
+                //string UrlBrowserToConnect = "http://127.0.0.1:5500/";
+                opt.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
             services.AddControllers();
 
             services.AddDbContext<VehiculosContext>(opt =>
@@ -35,6 +43,8 @@ namespace Ejercicio11
                     Version = "v1"
                 });
             });
+
+            //habilito cors
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,IWebHostEnvironment env)
@@ -43,11 +53,11 @@ namespace Ejercicio11
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseSwagger();
             app.UseSwaggerUI();
-
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
